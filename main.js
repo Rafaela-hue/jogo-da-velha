@@ -57,14 +57,14 @@ function handleResultValidation() {
     }
 
     if (roundWon) {
-        statusDisplay.innerHTML = `O Jogador ${currentPlayer} venceu!`;
+        statusDisplay.innerHTML = `O Jogador **${currentPlayer}** venceu!`;
         gameActive = false;
         return;
     }
 
     let roundDraw = !board.includes('');
     if (roundDraw) {
-        statusDisplay.innerHTML = `Empate!`;
+        statusDisplay.innerHTML = `**Empate!**`;
         gameActive = false;
         return;
     }
@@ -74,19 +74,18 @@ function handleResultValidation() {
 
 function handlePlayerChange() {
     currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-    statusDisplay.innerHTML = `Vez do Jogador ${currentPlayer}`;
+    statusDisplay.innerHTML = `Vez do Jogador **${currentPlayer}**`;
 }
 
 function handleRestartGame() {
     gameActive = true;
     currentPlayer = 'X';
     board = ['', '', '', '', '', '', '', '', ''];
-    statusDisplay.innerHTML = `Vez do Jogador ${currentPlayer}`;
+    statusDisplay.innerHTML = `Vez do Jogador **${currentPlayer}**`;
     cells.forEach(cell => {
         cell.textContent = '';
         cell.classList.remove('winner');
     });
 }
 
-// Inicializa o display de status ao carregar
-statusDisplay.innerHTML = `Vez do Jogador ${currentPlayer}`;
+statusDisplay.innerHTML = `Vez do Jogador **${currentPlayer}**`;
