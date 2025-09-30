@@ -30,7 +30,7 @@ h1 {
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s;
-    color: #333;
+    color: #181717;
 }
 
 .cell:hover {
