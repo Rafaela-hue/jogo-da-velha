@@ -17,10 +17,88 @@ const winningConditions = [
     [2, 4, 6],
 ];
 
-const winningMessage = () => `O Jogador ${currentPlayer}` Venceu!;
+const winningMessage = () => `O Jogador ${currentPlayer} Venceu!`;
 const drawMessage = () => `O jogo terminou em Empate!`;
 const currentPlayerTurn = () => `É a vez do Jogador`;
 
 statusDisplay.innerHTML = currentPlayerTurn();
 
+function handleCellPlayed(clickedCell, clickedCellIndex) {
+    gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.innerHTML = currentPlayer;
+    clickedCell.classList.add(currentPlayer.toLowerCase());
+}
 
+function handlePlayerChange() {
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    statusDisplay.innerHTML = currentPlayerTurn();
+}
+
+function handleResultValidation() {
+    let roundWon = false;
+
+    for (let i = 0; i < winningConditions.length; i++) {
+        const winCondition = winningConditions[i];
+        
+        let a = gameState[winCondition[0]];
+        let b = gameState[winCondition[1]];
+        let c = gameState[winCondition[2]];
+
+        if (a === '' || b === '' || c === '') {
+            continue; 
+        }
+
+        if (a === b && b === c) {
+            roundWon = true;
+            break;
+        }
+    }
+
+    if (roundWon) {
+        statusDisplay.innerHTML = winningMessage();
+        gameActive = false;
+        return;
+    }
+
+    let roundDraw = !gameState.includes("");
+    if (roundDraw) {
+        statusDisplay.innerHTML = drawMessage();
+        gameActive = false;
+        return;
+    }
+
+    handlePlayerChange();
+}
+
+function handleCellClick(clickedCellEvent) {
+    const clickedCell = clickedCellEvent.target;
+    const clickedCellIndex = parseInt(
+        clickedCell.getAttribute('data-index')
+    );
+
+    if (gameState[clickedCellIndex] !== '' || !gameActive) {
+        return;
+    }
+
+    handleCellPlayed(clickedCell, clickedCellIndex);
+    handleResultValidation();
+}
+
+function handleRestartGame() {
+    gameActive = true;
+    currentPlayer = 'X';
+    gameState = ['', '', '', '', '', '', '', '', ''];
+    statusDisplay.innerHTML = currentPlayerTurn();
+
+    cells.forEach(cell => {
+        cell.innerHTML = '';
+        cell.classList.remove('x');
+        cell.classList.remove('o');
+    });
+}
+
+cells.forEach(cell => {
+    cell.addEventListener('click', handleCellClick);
+});
+
+restartButton.addEventListener('click', handleRestartGame);
